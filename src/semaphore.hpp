@@ -51,7 +51,7 @@ namespace fu {
         void wait();
 
         /**
-         * Post
+         * Post.
          */
         void post();
 
