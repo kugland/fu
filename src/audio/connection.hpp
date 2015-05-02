@@ -22,7 +22,7 @@
 #ifndef U68FB47BA_560F_4F14_9DD5_523062854D8A
 #define U68FB47BA_560F_4F14_9DD5_523062854D8A
 
-#include "../../core/semaphore.hpp"
+#include "../semaphore.hpp"
 #include "buffer.hpp"
 
 namespace fu {
