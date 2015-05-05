@@ -9,12 +9,15 @@ ADD_DEFINITIONS(
     -pthread
 )
 
-find_package(Libunwind REQUIRED)
+FIND_PACKAGE(Libunwind REQUIRED)
+FIND_PACKAGE(SampleRate REQUIRED)
+FIND_PACKAGE(Pipeline REQUIRED)
 
 # Set up include paths
-include_directories(
+INCLUDE_DIRECTORIES(
     ${LIBUNWIND_INCLUDE_DIR}
-)
+    ${SAMPLERATE_INCLUDE_DIR}
+    ${PIPELINE_INCLUDE_DIR})
 
 SET(TARGET_fu_NAME fu)
 SET(TARGET_fu_FILES
@@ -25,8 +28,16 @@ SET(TARGET_fu_FILES
     src/logger.cpp
     src/logger.hpp
     src/semaphore.cpp
-    src/semaphore.hpp)
+    src/semaphore.hpp
+)
 
 ADD_EXECUTABLE(${TARGET_fu_NAME} ${TARGET_fu_FILES})
 
-TARGET_LINK_LIBRARIES(fu ${LIBUNWIND_LIBRARIES})
+TARGET_LINK_LIBRARIES(
+    ${TARGET_fu_NAME}
+    ${LIBUNWIND_LIBRARIES}
+    ${SAMPLERATE_LIBRARY}
+    ${PIPELINE_LIBRARY}
+)
+
+ADD_CUSTOM_TARGET(clean-cmake-files COMMAND ${CMAKE_COMMAND} -P clean-all.cmake)

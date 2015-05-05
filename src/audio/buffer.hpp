@@ -41,6 +41,7 @@ namespace fu {
             unsigned _frames;
             unsigned _channels;
             unsigned _sample_rate;
+            bool     _finished;
 
         public:
 
@@ -57,7 +58,8 @@ namespace fu {
                   _capacity(0),
                   _frames(0),
                   _channels(0),
-                  _sample_rate(0)
+                  _sample_rate(0),
+                  _finished(false)
             { }
 
             /**
@@ -65,7 +67,7 @@ namespace fu {
              */
             __attribute__((always_inline))
             inline buffer(unsigned frames, unsigned channels, unsigned sample_rate)
-                : _data(nullptr)
+                : _data(nullptr), _finished(false)
             {
                 reset(frames, channels, sample_rate);
             }
@@ -143,6 +145,14 @@ namespace fu {
                 _sample_rate = value;
             }
 
+            /**
+             * Returns true if this is the last buffer in a stream, false otherwise.
+             */
+            __attribute__((always_inline))
+            inline bool finished() const
+            {
+                return _finished;
+            }
 
             /* --------------------------------------------------------------------------------- */
             /*                               Misc member functions                               */
@@ -173,6 +183,15 @@ namespace fu {
              * Releases its internal buffer.
              */
             float* release();
+
+            /**
+             * Tells the receiver this is the last buffer in a stream.
+             */
+            __attribute__((always_inline))
+            inline void finish()
+            {
+                _finished = true;
+            }
         };
 
     } // namespace audio

@@ -49,6 +49,7 @@ buffer::buffer(buffer&& other) noexcept
       _sample_rate(other._sample_rate)
 {
     other._data        = nullptr;
+    other._capacity    = 0;
     other._frames      = 0;
     other._channels    = 0;
     other._sample_rate = 0;
@@ -99,10 +100,10 @@ float* buffer::release()
 {
     float* data = _data;
 
-    _data = nullptr;
-    _capacity = 0;
-    _frames = 0;
-    _channels = 0;
+    _data        = nullptr;
+    _capacity    = 0;
+    _frames      = 0;
+    _channels    = 0;
     _sample_rate = 0;
 
     return data;

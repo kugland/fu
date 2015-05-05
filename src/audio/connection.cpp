@@ -45,11 +45,12 @@ void connection::send(buffer& buf)
 bool connection::recv(buffer& buf)
 {
     _recv_semaphore.wait();
-    if (__builtin_expect(_send_buf == nullptr, 0)) {
-        return false;
-    } else {
+    if (__builtin_expect(_send_buf != nullptr, 1)) {
         std::swap(*_send_buf, buf);
         _send_semaphore.post();
         return true;
+    } else {
+        // connection::close was called by the sender.
+        return false;
     }
 }
